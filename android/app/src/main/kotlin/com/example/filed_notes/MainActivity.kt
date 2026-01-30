@@ -1,0 +1,6 @@
+package com.example.filed_notes
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

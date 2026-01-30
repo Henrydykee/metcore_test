@@ -1,0 +1,54 @@
+name: filed_notes
+description: Offline-first Filed Notes app. Works fully without internet; syncs when connectivity is available.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  uuid: ^4.5.1
+  intl: 0.19.0
+  dio: ^5.4.0
+  get_it: ^7.6.4
+  device_info_plus: ^9.1.0
+  package_info_plus: ^5.0.1
+  flutter_secure_storage: ^9.0.0
+  logger: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.4
+  build_runner: ^2.4.8
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/manrope-light.otf
+          weight: 300
+        - asset: assets/fonts/manrope-regular.otf
+          weight: 400
+        - asset: assets/fonts/manrope-medium.otf
+          weight: 500
+        - asset: assets/fonts/manrope-bold.otf
+          weight: 700
+        - asset: assets/fonts/manrope-extrabold.otf
+          weight: 800
+        - asset: assets/fonts/manrope-semibold.otf
+          weight: 600
+        - asset: assets/fonts/manrope-thin.otf
+          weight: 200

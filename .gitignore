@@ -1,0 +1,27 @@
+# Flutter specific
+/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+
+# Dart specific
+.dart_tool/
+
+# IDE specific
+.idea/
+.vscode/
+*.iml
+
+# Mac OS specific
+.DS_Store
+
+# Sensitive data
+.env
+
+# Generated files
+*.log
+*.lock
+*.bak
+
+
