@@ -104,7 +104,7 @@ lib/
 
 1. **Local**: All reads and writes go through the repository, which uses Hive as the source of truth.
 2. **Sync**: When a remote datasource is available, sync happens during user actions (get list, create, update, delete).
-3. **Graceful degradation**: Network failures are caught and logged; the app continues using local data.
+3.  Network failures are caught and logged; the app continues using local data.
 
 ### Sync triggers
 
