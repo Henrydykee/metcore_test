@@ -60,7 +60,6 @@ class _CreateEditNoteScreenState extends ConsumerState<CreateEditNoteScreen> {
         .toList();
   }
 
-  /// At least one of title or body must be provided
   String? _validateTitle(String? value) {
     final title = value?.trim() ?? '';
     final body = _bodyController.text.trim();

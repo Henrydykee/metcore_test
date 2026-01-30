@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 
 import '../../platform/env_config.dart';
@@ -9,12 +8,9 @@ import 'network_interceptor.dart';
 import 'network_service.dart';
 import 'network_service_response.dart';
 
-/// Basic HTTP request service wrapper around the common
-/// HTTP Methods: GET, POST, PUT, PATCH, DELETE
 class NetworkServiceImpl implements NetworkService {
   static var networkSetupOptions = BaseOptions(
-    //include request timeout of 60secs to through exception
-    connectTimeout:  const Duration(seconds: 3000),
+    connectTimeout: const Duration(seconds: 3000),
     followRedirects: true,
     baseUrl: EnvConfig.instance!.values!.baseUrl,
   );
@@ -22,17 +18,6 @@ class NetworkServiceImpl implements NetworkService {
   NetworkConfig? _networkConfiguration;
   final Dio _dio = Dio(networkSetupOptions);
 
-
-  ///  Instantiate [NetworkServiceImpl] without [NetworkInterceptor]s
-  ///
-  ///  '''
-  ///   You can instantiate the [NetworkServiceImpl] using its named
-  ///   constructor withInterceptors eg.
-  ///      List<NetworkInterceptor>  interceptors;
-  ///      NetworkServices.withInterceptors(interceptors);
-  ///
-  ///  '''
-  ///  Instantiate [NetworkServiceImpl] with [NetworkInterceptor]s
   NetworkServiceImpl({
     NetworkConfig? networkConfiguration,
     NetworkInterceptor? interceptor,
@@ -45,7 +30,6 @@ class NetworkServiceImpl implements NetworkService {
     }
   }
 
-  /// Add an interceptor to the internal network request handler
   registerInterceptor(NetworkInterceptor? interceptor) {
     if (interceptor == null) {
       throw Exception(
@@ -56,7 +40,6 @@ class NetworkServiceImpl implements NetworkService {
     _dio.interceptors.add(interceptor);
   }
 
-  /// Add list of interceptors to the internal network request handler
   registerInterceptors(List<NetworkInterceptor>? interceptors) {
     if (interceptors == null) {
       throw Exception(

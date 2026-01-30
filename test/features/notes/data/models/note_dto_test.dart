@@ -1,5 +1,3 @@
-// Unit tests only – logic/functions, no UI.
-
 import 'package:filed_notes/features/notes/data/models/note_dto.dart';
 import 'package:filed_notes/features/notes/domain/entities/note.dart';
 import 'package:filed_notes/features/notes/domain/enums/sync_status.dart';

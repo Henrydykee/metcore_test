@@ -41,7 +41,6 @@ class NotesRemoteDatasource implements RemoteDataSource {
     }, source: 'NotesRemoteDatasource.getNoteById');
   }
 
-  /// Create a new note on the server
   Future<NoteDto> createNote(NoteDto noteDto) async {
     return guardedApiCall<NoteDto>(() async {
       final response = await _networkService.post(
@@ -77,7 +76,6 @@ class NotesRemoteDatasource implements RemoteDataSource {
     }, source: 'NotesRemoteDatasource.updateNote');
   }
 
-  /// Delete a note from the server
   Future<void> deleteNote(String id) async {
     return guardedApiCall<void>(() async {
       final response = await _networkService.delete('$_endpoint/$id');
@@ -86,7 +84,5 @@ class NotesRemoteDatasource implements RemoteDataSource {
   }
 
   @override
-  void dispose() {
-    // No resources to dispose
-  }
+  void dispose() {}
 }

@@ -1,6 +1,5 @@
 import '../enums/sync_status.dart';
 
-/// Domain entity for a note.
 class Note {
   const Note({
     required this.id,

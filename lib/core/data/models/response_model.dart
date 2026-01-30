@@ -11,7 +11,6 @@ class ResponseModel<T> {
     required this.data,
   });
 
-  /// The [fromJsonT] function converts the JSON representation of T into an instance of T.
   factory ResponseModel.fromJson(
       Map<String, dynamic> json,
       T Function(Object? json) fromJsonT,

@@ -12,8 +12,7 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
     final fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    
-    // Handle backward compatibility: createdAt may not exist in older data
+
     DateTime? createdAt;
     if (fields.containsKey(6)) {
       createdAt = fields[6] as DateTime?;
@@ -33,7 +32,7 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
   @override
   void write(BinaryWriter writer, NoteModel obj) {
     writer
-      ..writeByte(7) // Updated field count
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)

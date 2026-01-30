@@ -33,7 +33,6 @@ final filteredNotesProvider = FutureProvider<List<Note>>((ref) async {
   return repo.searchByTitle(search);
 });
 
-/// All unique tags from notes for filter chips.
 final allTagsProvider = FutureProvider<List<String>>((ref) async {
   final repo = ref.watch(notesRepositoryProvider);
   final notes = await repo.getNotes();

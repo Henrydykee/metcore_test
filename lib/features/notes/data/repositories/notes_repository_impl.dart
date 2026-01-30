@@ -19,20 +19,15 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<List<Note>> getNotes() async {
     if (_remote != null) {
-      // 1. Push any pending notes to server first (on launch / refresh)
       await _pushPendingNotes();
 
-      // 2. Fetch from remote and sync to local
       try {
         final remoteNotes = await _remote!.getNotes();
-        // Sync remote notes to local storage
         final models = remoteNotes.map((dto) {
           final entity = dto.toEntity();
           return NoteModel.fromEntity(entity);
         }).toList();
         await _local.putAll(models);
-        // Remove orphaned local pending notes that duplicate synced remote notes
-        // (e.g. client-created note later synced with different server id)
         final remoteIds = {for (var m in models) m.id};
         final localList = _local.getAll();
         for (final local in localList) {
@@ -49,11 +44,9 @@ class NotesRepositoryImpl implements NotesRepository {
         }
       } on NetworkFailure catch (e) {
         logger.e('Failed to fetch notes from remote: ${e.message}');
-        // Continue with local data
       }
     }
 
-    // Return local data (either synced from remote or existing local data)
     final list = _local.getAll();
     return list.map((m) => m.toEntity()).toList();
   }
@@ -64,7 +57,6 @@ class NotesRepositoryImpl implements NotesRepository {
     return b.every((t) => sa.contains(t));
   }
 
-  /// Pushes local pending notes to the server. Called on getNotes (launch/refresh).
   Future<void> _pushPendingNotes() async {
     if (_remote == null) return;
 
@@ -84,12 +76,10 @@ class NotesRepositoryImpl implements NotesRepository {
 
       try {
         if (serverIds.contains(local.id)) {
-          // Note exists on server → PATCH (update)
           final remoteNote = await _remote!.updateNote(dto);
           final synced = NoteModel.fromEntity(remoteNote.toEntity());
           await _local.put(synced);
         } else {
-          // Note not on server → POST (create)
           final remoteNote = await _remote!.createNote(dto);
           final syncedEntity = remoteNote.toEntity();
           await _local.put(NoteModel.fromEntity(syncedEntity));
@@ -99,28 +89,23 @@ class NotesRepositoryImpl implements NotesRepository {
         }
       } on NetworkFailure catch (e) {
         logger.e('Failed to push pending note ${local.id}: ${e.message}');
-        // Keep pending; will retry on next getNotes
       }
     }
   }
 
   @override
   Future<Note?> getNoteById(String id) async {
-    // Try remote first
     if (_remote != null) {
       try {
         final dto = await _remote!.getNoteById(id);
         final entity = dto.toEntity();
-        // Update local cache
         await _local.put(NoteModel.fromEntity(entity));
         return entity;
       } on NetworkFailure catch (e) {
         logger.e('Failed to fetch note from remote: ${e.message}');
-        // Fallback to local
       }
     }
 
-    // Fallback to local
     final model = _local.getById(id);
     return model?.toEntity();
   }
@@ -133,8 +118,6 @@ class NotesRepositoryImpl implements NotesRepository {
   }) async {
     final id = _newId();
     final now = DateTime.now().toUtc();
-    
-    // Create locally first with pending status
     final note = Note(
       id: id,
       title: title,
@@ -146,22 +129,18 @@ class NotesRepositoryImpl implements NotesRepository {
     );
     await _local.put(NoteModel.fromEntity(note));
 
-    // Try to sync to remote
     if (_remote != null) {
       try {
         final dto = NoteDto.fromEntity(note);
         final remoteNote = await _remote!.createNote(dto);
-        // Update local with synced data (server assigns its own id)
         final syncedEntity = remoteNote.toEntity();
         await _local.put(NoteModel.fromEntity(syncedEntity));
-        // Remove the original local entry; server id differs from client id
         if (syncedEntity.id != note.id) {
           await _local.delete(note.id);
         }
         return syncedEntity;
       } on NetworkFailure catch (e) {
         logger.e('Failed to create note on remote: ${e.message}');
-        // Keep local note with pending status
       }
     }
 
@@ -174,22 +153,18 @@ class NotesRepositoryImpl implements NotesRepository {
       updatedAt: DateTime.now().toUtc(),
       syncStatus: SyncStatus.pending,
     );
-    
-    // Update locally first
+
     await _local.put(NoteModel.fromEntity(updated));
 
-    // Try to sync to remote
     if (_remote != null) {
       try {
         final dto = NoteDto.fromEntity(updated);
         final remoteNote = await _remote!.updateNote(dto);
-        // Update local with synced data
         final syncedEntity = remoteNote.toEntity();
         await _local.put(NoteModel.fromEntity(syncedEntity));
         return syncedEntity;
       } on NetworkFailure catch (e) {
         logger.e('Failed to update note on remote: ${e.message}');
-        // Keep local note with pending status
       }
     }
 
@@ -198,17 +173,13 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future<void> deleteNote(String id) async {
-    // Delete locally first
     await _local.delete(id);
 
-    // Try to delete from remote
     if (_remote != null) {
       try {
         await _remote!.deleteNote(id);
       } on NetworkFailure catch (e) {
         logger.e('Failed to delete note on remote: ${e.message}');
-        // Note is deleted locally, but will remain on server
-        // Could implement a queue for retry logic later
       }
     }
   }

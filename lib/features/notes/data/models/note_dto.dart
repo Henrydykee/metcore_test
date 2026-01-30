@@ -1,7 +1,6 @@
 import '../../domain/entities/note.dart';
 import '../../domain/enums/sync_status.dart';
 
-/// Data Transfer Object for Note API responses
 class NoteDto {
   NoteDto({
     required this.id,
@@ -41,7 +40,6 @@ class NoteDto {
     };
   }
 
-  /// Convert to domain entity
   Note toEntity() {
     return Note(
       id: id,
@@ -54,7 +52,6 @@ class NoteDto {
     );
   }
 
-  /// Create from domain entity (for POST/PATCH requests)
   factory NoteDto.fromEntity(Note note) {
     return NoteDto(
       id: note.id,
@@ -66,7 +63,6 @@ class NoteDto {
     );
   }
 
-  /// Create request body for POST (without id and timestamps)
   Map<String, dynamic> toCreateRequest() {
     return {
       'title': title,
@@ -75,7 +71,6 @@ class NoteDto {
     };
   }
 
-  /// Create request body for PATCH (without id and createdAt)
   Map<String, dynamic> toUpdateRequest() {
     return {
       'title': title,

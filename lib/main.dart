@@ -17,21 +17,17 @@ import 'features/notes/presentation/screens/notes_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Hive
+
   await Hive.initFlutter();
   Hive.registerAdapter(NoteModelAdapter());
-  
-  // Configure environment with base URL
+
   EnvConfig(
     flavor: Env.STAGING,
     values: EnvVar(baseUrl: 'http://localhost:8080/v1'),
   );
-  
-  // Initialize dependency injection (includes NetworkService)
+
   await initInjectors();
-  
-  // Initialize datasources
+
   final box = await NotesLocalDatasource.openBox();
   final local = NotesLocalDatasource(box);
   final remote = NotesRemoteDatasource(inject<NetworkService>());

@@ -1,5 +1,3 @@
-// Unit tests only – logic/functions, no UI.
-
 import 'package:filed_notes/core/data/database/db_exceptions.dart';
 import 'package:filed_notes/features/notes/data/datasources/notes_local_datasource.dart';
 import 'package:filed_notes/features/notes/data/datasources/notes_remote_datasource.dart';

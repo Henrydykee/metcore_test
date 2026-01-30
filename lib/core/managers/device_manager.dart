@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 
-// import '../../features/onboarding/data/models/registration_model.dart';
 import '../../features/onboarding/data/models/registration_model.dart';
 import '../di/di_config.dart';
 import '../platform/storage/secured_storage.dart';

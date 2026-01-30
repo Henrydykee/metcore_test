@@ -45,11 +45,7 @@ class LocalDatabaseConfig {
     ''');
   }
 
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < newVersion) {
-      // Handle database migration logic if needed
-    }
-  }
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {}
 
   Future<int> insertUser(Map<String, dynamic> userData) async {
     final db = await database;
